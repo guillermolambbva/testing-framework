@@ -9,12 +9,28 @@ import {
  * Food data with nested structure.
  * Each node has a name and an optional list of children.
  */
-interface MenuTestCycle {
+interface TestCycle {
   name: string;
-  children?: MenuTestCycle[];
+  testCycle?: TestCycle[];
 }
 
-const TREE_DATA: MenuTestCycle[] = [
+interface TestCase {
+  title: string;
+  description: string;
+  type: TestType;
+}
+
+enum TestType {
+  Unit,
+  Mutation,
+  Manual,
+  Integration,
+  Load,
+  Performance,
+  Acceptance
+}
+
+const TREE_DATA: TestCycle[] = [
   {
     name: 'Test para el login ECDY',
     children: [
@@ -25,17 +41,17 @@ const TREE_DATA: MenuTestCycle[] = [
   },
   {
     name: 'Test de performance de ECDY',
-    children: [
+    testCycle: [
       {
         name: 'Test de infraestructura y HA para ECDY',
-        children: [
+        testCycle: [
           { name: 'Test ingress' },
           { name: 'Chaos testing replicas' },
         ],
       },
       {
         name: 'Test de carga - Usuarios concurrentes en ECDY',
-        children: [
+        testCycle: [
           { name: 'Test 500 Usuarios' },
           { name: 'Test Chrome, Firefox, Edge' },
         ],
@@ -59,7 +75,7 @@ interface ExampleFlatNode {
   templateUrl: 'tree-flat-overview-example.html',
 })
 export class TreeFlatOverviewExample {
-  private _transformer = (node: MenuTestCycle, level: number) => {
+  private _transformer = (node: TestCycle, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
