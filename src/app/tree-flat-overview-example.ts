@@ -10,14 +10,15 @@ import {
  * Each node has a name and an optional list of children.
  */
 interface TestCycle {
-  name: string;
+  title: string;
   testCycle?: TestCycle[];
+  testCases?: TestCase[];
 }
 
-interface TestCase {
+interface TestStep {
   title: string;
   description: string;
-  type: TestType;
+  order: number;
 }
 
 enum TestType {
@@ -27,33 +28,40 @@ enum TestType {
   Integration,
   Load,
   Performance,
-  Acceptance
+  Acceptance,
+}
+
+interface TestCase {
+  title: string;
+  description: string;
+  testType: TestType;
+  testSteps?: TestStep[];
 }
 
 const TREE_DATA: TestCycle[] = [
   {
-    name: 'Test para el login ECDY',
-    children: [
-      { name: 'Test de Usuario correcto' },
-      { name: 'Test Olvidar contraseña' },
-      { name: 'Test usuario incorrecto' },
+    title: 'Test para el login ECDY',
+    testCycle: [
+      { title: 'Test de Usuario correcto' },
+      { title: 'Test Olvidar contraseña' },
+      { title: 'Test usuario incorrecto' },
     ],
   },
   {
-    name: 'Test de performance de ECDY',
+    title: 'Test de performance de ECDY',
     testCycle: [
       {
         name: 'Test de infraestructura y HA para ECDY',
         testCycle: [
-          { name: 'Test ingress' },
-          { name: 'Chaos testing replicas' },
+          { title: 'Test ingress' },
+          { title: 'Chaos testing replicas' },
         ],
       },
       {
-        name: 'Test de carga - Usuarios concurrentes en ECDY',
+        title: 'Test de carga - Usuarios concurrentes en ECDY',
         testCycle: [
-          { name: 'Test 500 Usuarios' },
-          { name: 'Test Chrome, Firefox, Edge' },
+          { title: 'Test 500 Usuarios' },
+          { title: 'Test Chrome, Firefox, Edge' },
         ],
       },
     ],
